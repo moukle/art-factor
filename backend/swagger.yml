@@ -1,0 +1,43 @@
+swagger: "2.0"
+info:
+  description: "This is the configuration for the ArtFactor API"
+  version: "1.0.0"
+  title: "Swagger ArtFactor"
+consumes:
+  - application/json
+produces:
+  - application/json
+
+basePath: /api
+
+# Paths supported by the server application
+paths:
+  /fact:
+    get:
+      operationId: services.fact.read_random_true
+      tags:
+        - Fact
+      summary: Read true random fact(s) from ArtOntolgy
+      description: Read true random fact(s) from ArtOntolgy
+      # parameters:
+        # - name: length
+        #   in: query
+        #   type: integer
+        #   description: Number of people to get from people
+        #   required: false
+        # - name: offset
+        #   in: query
+        #   type: integer
+        #   description: Offset from beginning of list where to start gathering people
+        #   required: false
+      responses:
+        200:
+          description: Successfully read fact list operation
+          schema:
+            type: array
+            items:
+              properties:
+                fact:
+                  type: string
+                trueFact:
+                  type: boolean
