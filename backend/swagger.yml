@@ -37,7 +37,13 @@ paths:
             type: array
             items:
               properties:
-                fact:
+                resource:
+                  type: string
+                subject:
+                  type: string
+                predicate:
+                  type: string
+                object:
                   type: string
                 trueFact:
                   type: boolean

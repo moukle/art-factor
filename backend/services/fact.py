@@ -1,14 +1,17 @@
 from ontologyAPI.api import get_random_triple
 
-def fact(s, o, factTrue=True):
+def fact(r, s, p, o, factTrue=True):
     fact = { 
         "Fact": {
-            "fact": str(s+o),
+            "resource": r,
+            "subject": s,
+            "predicate": p,
+            "object": o,
             "factTrue": factTrue
         }
     }
     return fact
 
 def read_random_true():
-    s, o = get_random_triple()
-    return fact(s, o, True)
+    r, s, p, o = get_random_triple()
+    return fact(r, s, p, o, True)

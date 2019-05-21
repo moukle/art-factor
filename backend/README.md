@@ -8,3 +8,7 @@ python server.js          # launch server
 
 ## API Usage
 Launch server and visit [the servers swagger documentation](http://localhost:5000/api/ui/) for HTTP REST documentation.
+
+## Requests
+http://localhost:5000/api/fact
+
