@@ -6,9 +6,6 @@ async function getFacts(){
     await $.ajax({
         url: url,
         type: "get",
-        headers: {
-            'Access-Control-Allow-Origin': 'http://localhost:5000',
-        },
         beforeSend: () => {
             // show gif
         },
@@ -16,8 +13,7 @@ async function getFacts(){
            console.log("Received response: ", response);
         },
         error: function (jqXHR, textStatus, errorThrow) {
-            // alert(textStatus);
-            alert(errorThrow);
+            alert(textStatus);
         },
         timeout: 8000
     });
