@@ -43,11 +43,17 @@ function getFacts() {
                 case 0: return [4 /*yield*/, $.ajax({
                         url: url,
                         type: "get",
+                        datatype: JSON,
                         beforeSend: function () {
                             // show gif
                         },
                         success: function (response) {
                             console.log("Received response: ", response);
+                            let facts= document.getElementsByClassName('fact');
+                            
+                            [].forEach.call(facts, function (fact) {
+                                    fact.textContent = response.Fact.subject + " " + response.Fact.predicate + " " + response.Fact.object
+                            });
                         },
                         error: function (jqXHR, textStatus, errorThrow) {
                             alert(textStatus);
