@@ -43,6 +43,10 @@ function getFacts() {
                 case 0: return [4 /*yield*/, $.ajax({
                         url: url,
                         type: "get",
+                        headers: {
+                            'Access-Control-Allow-Origin': 'http://localhost:5000',
+                            'Access-Control-Allow-Credentials': true
+                        },
                         beforeSend: function () {
                             // show gif
                         },

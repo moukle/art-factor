@@ -10,6 +10,7 @@ pylint = "*"
 flask = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 rdflib = "*"
+flask-cors = "*"
 
 [requires]
 python_version = "3.7"
