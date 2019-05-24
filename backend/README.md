@@ -12,3 +12,19 @@ Launch server and visit [the servers swagger documentation](http://localhost:500
 ## Requests
 http://localhost:5000/api/fact
 
+## Docker 
+- switch into the project's `root` directory (i.e. ./artfactor)
+- build the docker image
+
+``` shell
+docker build -t quiz .
+```
+- run the docker image
+
+
+``` shell
+docker run -it --network host quiz
+```
+
+- the server should now run under: http://192.168.99.100:5000/api/fact (otherwise: check `docker-machine ip`)
+
