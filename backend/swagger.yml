@@ -14,8 +14,9 @@ basePath: /api
 paths:
   /fact:
     get:
-      operationId: services.fact.read_random_true
+      operationId: services.fact.read_true_false_false
       tags:
+        - Statement
         - Fact
       summary: Read true random fact(s) from ArtOntolgy
       description: Read true random fact(s) from ArtOntolgy
@@ -36,14 +37,17 @@ paths:
           schema:
             type: array
             items:
-              properties:
-                resource:
-                  type: string
-                subject:
-                  type: string
-                predicate:
-                  type: string
-                object:
-                  type: string
-                trueFact:
-                  type: boolean
+                type: array
+                items:
+                  properties:
+                    resource:
+                      type: string
+                    subject:
+                      type: string
+                    predicate:
+                      type: string
+                    object:
+                      type: string
+                    trueFact:
+                      type: boolean
+
