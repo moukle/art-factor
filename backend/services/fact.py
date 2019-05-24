@@ -14,4 +14,4 @@ def fact(r, s, p, o, factTrue=True):
 
 def read_random_true():
     r, s, p, o = get_random_triple()
-    return fact(r, s, p, o, True)
+    return fact(r, s, o, p, True)
