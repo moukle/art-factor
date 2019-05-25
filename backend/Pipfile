@@ -11,6 +11,7 @@ flask = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 rdflib = "*"
 flask-cors = "*"
+elasticsearch = "*"
 
 [requires]
 python_version = "3.7"

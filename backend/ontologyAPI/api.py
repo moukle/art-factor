@@ -8,7 +8,7 @@ def load_ontology():
     print("Finished loading ArtOntology")
     return graph
 
-ontology = load_ontology()
+# ontology = load_ontology()
 
 #returns true or false statement
 def get_random_triple(isTrue=True):
@@ -84,3 +84,19 @@ def get_person():
     LIMIT 1
      """)
     return res_random
+
+
+def get_all_persons():
+    res_all_persons = ontology.query("""
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX wd: <http://www.wikidata.org/entity/>
+        PREFIX : <http://h-da.de/fbi/artontology/>
+
+        SELECT ?p ?n
+        WHERE {
+            ?p a :person;
+                rdfs:label ?n.
+        }
+    """)
+    return res_all_persons
