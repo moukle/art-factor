@@ -8,7 +8,7 @@ def load_ontology():
     print("Finished loading ArtOntology")
     return graph
 
-# ontology = load_ontology()
+ontology = load_ontology()
 
 #returns true or false statement
 def get_random_triple(isTrue=True):

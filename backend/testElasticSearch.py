@@ -2,6 +2,8 @@
 
 import elasticSearch.api as esapi
 
-# esapi.create_person_index()
-# esapi.store_all_persons()
+# uncomment once inserted
+esapi.create_person_index()
+esapi.store_all_persons()
+
 esapi.search_persons("eon")
