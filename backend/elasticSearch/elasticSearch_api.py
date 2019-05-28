@@ -1,4 +1,4 @@
-from ontologyAPI.api import get_all_persons
+from ontologyAPI.ontology_api import get_all_persons
 from elasticsearch import Elasticsearch
 
 
@@ -11,7 +11,6 @@ def connect_elasticsearch():
         print('Awww it could not connect!')
     return _es
 
-es = connect_elasticsearch()
 
 def create_person_index():
     settings = {
@@ -33,12 +32,11 @@ def create_person_index():
             }
         }
     }
-    
     # Ignore 400 means to ignore "Index Already Exist" error.
     es.indices.create(index='artontology', ignore=400, body=settings)
 
 def store_all_persons():
-    print('Storing all persons in Elasticsearch index')
+    print('Storing all persons in Elasticsearch index ...')
     all_persons = get_all_persons()
     for person in all_persons:
         uri, name = person
@@ -47,6 +45,17 @@ def store_all_persons():
     print("Finished Elasticsearch storing")
 
 def search_persons(name):
-    search = {'_source': ['uri', 'name'], 'query': { 'regexp': { 'name': '.*'+name+'.*' }}}
-    res = es.search(index='artontology', body=search)
+    regexp = {'_source': ['uri', 'name'], 'query': { 'regexp': { 'name': '*?('+name+').*' }}}
+    fuzzy = {'_source': ['uri', 'name'], 'query': { 'fuzzy': { 'name': { "value": name }}}}
+    res = es.search(index='artontology', body=fuzzy)
+
+    responseJson = []
     print(res)
+    for p in res:
+        print(p)
+    return responseJson
+
+
+es = connect_elasticsearch()
+create_person_index()
+store_all_persons()

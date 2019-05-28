@@ -2,13 +2,12 @@ import rdflib
 
 def load_ontology():
     ONTOLOGY_PATH = "ontologies/ArtOntology.ttl"
-    print("Loading ArtOntology..")
+    print("Loading ArtOntology ...")
     graph = rdflib.Graph()
     graph.parse(location=ONTOLOGY_PATH, format="n3")
     print("Finished loading ArtOntology")
     return graph
 
-ontology = load_ontology()
 
 #returns true or false statement
 def get_random_triple(isTrue=True):
@@ -33,7 +32,6 @@ def get_random_triple(isTrue=True):
             s = true_row + alternate_row
             #print(s)
             return s
-
 
 
 def get_data_on_ressource(ressource=''):
@@ -62,10 +60,6 @@ def get_data_on_ressource(ressource=''):
     for row_person in ressource:
         for row in res:
             return row_person+row
-
-
-
-
 
 
 def get_person():
@@ -100,3 +94,6 @@ def get_all_persons():
         }
     """)
     return res_all_persons
+
+
+ontology = load_ontology()

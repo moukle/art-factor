@@ -1,6 +1,6 @@
 # TO BE REMOVED
 
-import elasticSearch.api as esapi
+import elasticSearch.elasticSearch_api as esapi
 
 # uncomment once inserted
 esapi.create_person_index()

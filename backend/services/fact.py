@@ -1,4 +1,4 @@
-from ontologyAPI.api import get_random_triple
+from ontologyAPI.ontology_api import get_random_triple
 
 def statement(t1, f1, f2):
     statement = {
