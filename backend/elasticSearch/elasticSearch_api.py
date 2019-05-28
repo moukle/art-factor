@@ -1,6 +1,8 @@
 from ontologyAPI.ontology_api import get_all_persons
 from elasticsearch import Elasticsearch
 
+import json
+
 
 def connect_elasticsearch():
     _es = None
@@ -16,17 +18,37 @@ def create_person_index():
     settings = {
         "settings": {
             "number_of_shards": 1,
-            "number_of_replicas": 0
+            "number_of_replicas": 0,
+            "analysis": {
+                "filter": {
+                    "edge_ngram_filter": {
+                        "type": "edge_ngram",
+                        "min_gram": 1,
+                        "max_gram": 10
+                    }
+                },
+                "analyzer": {
+                    "edge_ngram_analyzer": {
+                        "type": "custom",
+                        "tokenizer": "standard",
+                        "filter": [
+                            "lowercase",
+                            "edge_ngram_filter"
+                        ]
+                    }
+                }
+            }
         },
         "mappings": {
-            "persons": {
+            "person": {
                 "dynamic": "strict",
                 "properties": {
                     "uri": {
                         "type": "text"
                     },
                     "name": {
-                        "type": "text"
+                        "type": "text",
+                        "analyzer": "edge_ngram_analyzer"
                     }
                 }
             }
@@ -41,21 +63,22 @@ def store_all_persons():
     for person in all_persons:
         uri, name = person
         doc = {'uri': uri, 'name': name}
-        es.index(index='artontology', doc_type='persons', body=doc)
+        es.index(index='artontology', doc_type='person', body=doc)
     print("Finished Elasticsearch storing")
 
+
 def search_persons(name):
-    regexp = {'_source': ['uri', 'name'], 'query': { 'regexp': { 'name': '*?('+name+').*' }}}
-    fuzzy = {'_source': ['uri', 'name'], 'query': { 'fuzzy': { 'name': { "value": name }}}}
-    res = es.search(index='artontology', body=fuzzy)
+    query = { "query": { "match": { "name": { "query": name, "fuzziness": 2, "operator": "and" }}}}
+    # regexp = {'_source': ['uri', 'name'], 'query': { 'regexp': { 'name': '*?('+name+').*' }}}
+    # fuzzy = {'_source': ['uri', 'name'], 'query': { 'fuzzy': { 'name': { "value": name }}}}
+    res = es.search(index='artontology', body=query)
+    return res
 
-    responseJson = []
-    print(res)
-    for p in res:
-        print(p)
-    return responseJson
 
+def clean_index():
+    es.indices.delete(index='*')
+    create_person_index()
+    store_all_persons()
 
 es = connect_elasticsearch()
-create_person_index()
-store_all_persons()
+clean_index()
