@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="style.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="search-style.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
           integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
@@ -18,21 +19,17 @@
     </nav>
 </header>
 
-<button class="fact true">
-    Fact 1
-</button>
+<div class="wrapper">
+    <input list="filter" id="search" class="input" placeholder="Please Enter Text..." type="text" >
+    <span class="underline"></span>
 
-<button class="fact">
-    Fact 2
-</button>
-
-<button class="fact">
-    Fact 3
-</button>
-
-<button onclick="getFacts2()">
-    Get Fact
-</button>
+    <datalist id="filter">
+        <option>Leonardo Da Vinci<label class="tag">artist</label></option>
+        <option>Michelangelo<label>Rococo</label></option>
+        <option>Matisse<label>Realism</label></option>
+        <option>Jackson Pollock<label>artist</label></option>
+    </datalist>
+</div>
 
 </body>
 </html>
