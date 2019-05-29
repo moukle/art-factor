@@ -43,6 +43,7 @@ def get_data_on_ressource(ressource=''):
     else:
         for row in ressource:
             random_person = "wd:" + str.format(row[0]).split('/')[-1]
+    filter_list = """(rdf:type, rdfs:label, :gender, :image)"""
     res = ontology.query("""
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -52,6 +53,7 @@ def get_data_on_ressource(ressource=''):
                 SELECT *
                 WHERE { 
                 """ + random_person + """ ?p ?o.
+                FILTER(?p NOT IN """ + filter_list + """)
                 }
                 ORDER BY RAND()
                 LIMIT 1 

@@ -59,6 +59,7 @@ def read_true_false_false():
 
 
 def lie_validation(rowElement):
+    return True
     lying_filter = ["type", "label", "gender", "Label"]
     print(rowElement)
     for filter in lying_filter:
