@@ -16,24 +16,49 @@ def connect_elasticsearch():
 
 def create_person_index():
     settings = {
+        # "settings": {
+        #     "number_of_shards": 1,
+        #     "number_of_replicas": 0,
+        #     "analysis": {
+        #         "filter": {
+        #             "edge_ngram_filter": {
+        #                 "type": "edge_ngram",
+        #                 "min_gram": 1,
+        #                 "max_gram": 10
+        #             }
+        #         },
+        #         "analyzer": {
+        #             "edge_ngram_analyzer": {
+        #                 "type": "custom",
+        #                 "tokenizer": "standard",
+        #                 "filter": [
+        #                     "lowercase",
+        #                     "edge_ngram_filter"
+        #                 ]
+        #             }
+        #         }
+        #     }
+        # },
         "settings": {
-            "number_of_shards": 1,
-            "number_of_replicas": 0,
             "analysis": {
-                "filter": {
-                    "edge_ngram_filter": {
+                "analyzer": {
+                    "autocomplete": {
+                        "tokenizer": "autocomplete",
+                        "filter": [
+                            "lowercase"
+                        ]
+                        },
+                        "autocomplete_search": {
+                            "tokenizer": "lowercase"
+                        }
+                },
+                "tokenizer": {
+                    "autocomplete": {
                         "type": "edge_ngram",
                         "min_gram": 1,
-                        "max_gram": 10
-                    }
-                },
-                "analyzer": {
-                    "edge_ngram_analyzer": {
-                        "type": "custom",
-                        "tokenizer": "standard",
-                        "filter": [
-                            "lowercase",
-                            "edge_ngram_filter"
+                        "max_gram": 10,
+                        "token_chars": [
+                            "letter"
                         ]
                     }
                 }
@@ -48,7 +73,10 @@ def create_person_index():
                     },
                     "name": {
                         "type": "text",
-                        "analyzer": "edge_ngram_analyzer"
+                        "analyzer": "autocomplete",
+                        "search_analyzer": "autocomplete_search"
+                        # "index_analyzer": "edge_ngram_analyzer",
+                        # "search_analyzer": "standard"
                     }
                 }
             }
@@ -81,4 +109,4 @@ def clean_index():
     store_all_persons()
 
 es = connect_elasticsearch()
-clean_index()
+# clean_index()

@@ -10,19 +10,23 @@ def load_ontology():
 
 
 #returns true or false statement
-def get_random_triple(isTrue=True):
+def get_random_triple(isTrue=True, subject=''):
     if isTrue:
-        true_row = get_data_on_ressource()
+        true_row = get_data_on_ressource(subject)
         return true_row
     else:
         while(True):
-            true_row = get_data_on_ressource()
+            true_row = get_data_on_ressource(subject)
             alternate_row = get_data_on_ressource()
             #dont mix same elements
             if true_row[0] == alternate_row[0]:
+                print(true_row)
+                print(alternate_row)
+                print(1)
                 continue
             #lies arent lies if the object doesnt change
             if true_row[-1] == alternate_row[-1]:
+                print(2)
                 continue
             #kinda basic and not very extendable
             alternate_row = alternate_row[2:4]
@@ -35,14 +39,15 @@ def get_random_triple(isTrue=True):
 
 
 def get_data_on_ressource(ressource=''):
+    print(ressource)
     if ressource == '':
         #no ressource to get data on. Retrieve data from a random person
         ressource = get_person()
         for row in ressource:
             random_person = "wd:" + str.format(row[0]).split('/')[-1]
     else:
-        for row in ressource:
-            random_person = "wd:" + str.format(row[0]).split('/')[-1]
+        random_person = "wd:" + str.format(ressource).split('/')[-1]
+    print(random_person)
     filter_list = """(rdf:type, rdfs:label, :gender, :image)"""
     res = ontology.query("""
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -59,9 +64,8 @@ def get_data_on_ressource(ressource=''):
                 LIMIT 1 
 
                 """)
-    for row_person in ressource:
-        for row in res:
-            return row_person+row
+    for row in res:
+        return random_person+str(row)
 
 
 def get_person():
