@@ -39,15 +39,16 @@ def get_random_triple(isTrue=True, subject=''):
 
 
 def get_data_on_ressource(ressource=''):
-    print(ressource)
     if ressource == '':
         #no ressource to get data on. Retrieve data from a random person
         ressource = get_person()
+        print(ressource)
         for row in ressource:
             random_person = "wd:" + str.format(row[0]).split('/')[-1]
     else:
         random_person = "wd:" + str.format(ressource).split('/')[-1]
     print(random_person)
+    random_person_query = "BIND(" + random_person + " AS ?person)."
     filter_list = """(rdf:type, rdfs:label, :gender, :image)"""
     res = ontology.query("""
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -55,17 +56,21 @@ def get_data_on_ressource(ressource=''):
                 PREFIX wd: <http://www.wikidata.org/entity/>
                 PREFIX : <http://h-da.de/fbi/artontology/>
 
-                SELECT *
-                WHERE { 
-                """ + random_person + """ ?p ?o.
+                SELECT ?person ?s ?p ?o
+                WHERE {
+                """ + random_person_query + """ 
+                """ + random_person + """ ?p ?o;
+                    rdfs:label ?s.
                 FILTER(?p NOT IN """ + filter_list + """)
                 }
                 ORDER BY RAND()
                 LIMIT 1 
-
                 """)
-    for row in res:
-        return random_person+str(row)
+    for row_person in res:
+        print(row_person)
+    for row_person in res:
+        return row_person
+
 
 
 def get_person():
