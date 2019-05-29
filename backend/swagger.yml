@@ -16,10 +16,16 @@ paths:
     get:
       operationId: services.fact.read_true_false_false
       tags:
-        - Statement
         - Fact
       summary: Read true random fact(s) from ArtOntolgy
       description: Read true random fact(s) from ArtOntolgy
+      parameters:
+          - in: query
+            name: persons
+            type: array
+            items:
+              type: string
+            required: False
       responses:
         200:
           description: Successfully read fact list operation
@@ -44,7 +50,6 @@ paths:
       operationId: services.elastic.search
       tags:
         - ElasticSearch
-        - Fuzzy
       summary: Returns fuzzy result matching query from Elastic index
       description: Returns fuzzy result matching query from Elastic index
       parameters:
