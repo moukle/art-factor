@@ -3,71 +3,69 @@
 SEARCH STYLE
 ============
 */
+$accent_color: #00FFFF;
+
 body{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    vertical-align: middle;
     color: #fff;
     background-color: #000;
 }
 .wrapper {
+    display: inline-flex;
+    justify-content: center;
+    flex-direction: row;
     background-color: transparent;
     border: none;
     height: auto;
-    width: 60%;
-    margin: 0 auto;
+    width: 50rem;
+    margin: auto;
+    padding: 0;
 }
 
 .input {
+    vertical-align: bottom;
+    transition: all 10ms ease-in-out;
     background-color: transparent;
     border: none;
-    /*border-bottom: 0.01rem solid #fff;*/
-
+    border-bottom: 0.1rem solid #fff;
     color: #fff;
     font-size: 1em;
-    position: relative;
-    width: 100%;
+    width: 80%;
+    height: 2rem;
+    margin: auto;
+    padding: 0;
 }
 
 datalist{
-    width: 100%;
+    option{
+        label{
+            color: red;
+            margin: 0 1rem;
+        }
+    }
 }
 
-input::-webkit-input-placeholder {
-    color: #fff;
-}
 
 #search:focus{
-    border: none;
-}
-.input:focus + .underline {
-    transform: scale(1);
-}
-
-input:focus {
-    outline-width: 0;
-}
-.underline {
-    background-color: dodgerblue;
-    display: block;
-    height: 0.01rem;
-    -webkit-transform: scale(0, 1);
-    transform: scale(0, 1);
-    -webkit-transition: all 0.1s ease-in-out;
-    transition: all 0.1s ease-in-out;
-    width: 100%;
-    z-index: 100;
+    border-color: $accent_color;
 }
 
 // next button
 div {
+    margin: 0 auto;
     width: 5rem;
     height: 5rem;
-    position: absolute;
-    right: 4rem;
-    bottom: 3rem;
-
+    display: flex;
+    justify-content: center;
+    vertical-align: middle;
     .next {
+        vertical-align: middle;
         width: 100%;
         height: auto;
-        margin: 0 2rem;
+        margin: auto;
         cursor: pointer;
         overflow: visible;
         fill: #fff;
@@ -80,7 +78,7 @@ div {
         }
         &:hover polygon, &:hover path {
             transition: all 0.2s ease-in-out;
-            fill: dodgerblue;
+            fill: $accent_color;
         }
 
         &:hover .arrow {

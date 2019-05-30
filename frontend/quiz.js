@@ -4,7 +4,7 @@ window.onload = ()=> {
     let loader = document.getElementById('loader');
     let btn_group = document.getElementById('facts');
 
-    getFacts().then(()=>{
+    fetchFacts().then(()=>{
         loader.className = loader.className.replace(/\bactive\b/g, "inactive");
         btn_group.className = btn_group.className.replace(/\binactive\b/g, "active");
     });
@@ -47,7 +47,7 @@ function reset(fact_buttons){
  * add facts to the button
  * @returns {Promise<void>}
  */
-async function getFacts(){
+async function fetchFacts(){
     let fact_buttons = document.getElementsByClassName('fact');
 
     const response = await fetch(base_url);

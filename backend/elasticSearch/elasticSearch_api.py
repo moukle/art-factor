@@ -109,4 +109,4 @@ def clean_index():
     store_all_persons()
 
 es = connect_elasticsearch()
-# clean_index()
+clean_index()
