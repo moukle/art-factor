@@ -3,56 +3,116 @@
 SEARCH STYLE
 ============
 */
+body {
+  color: #fff;
+  background-color: #000;
+}
+
 .wrapper {
-    background-color: transparent;
-    border: none;
-    height: auto;
-    width: 60%;
-    margin: 0 auto;
+  background-color: transparent;
+  border: none;
+  height: auto;
+  width: 60%;
+  margin: 0 auto;
 }
 
 .input {
-    background-color: transparent;
-    border: none;
-    /*border-bottom: 0.01rem solid #fff;*/
-
-    color: #fff;
-    font-size: 1em;
-    position: relative;
-    width: 100%;
+  background-color: transparent;
+  border: none;
+  /*border-bottom: 0.01rem solid #fff;*/
+  color: #fff;
+  font-size: 1em;
+  position: relative;
+  width: 100%;
 }
 
-datalist{
-    width: 100%;
+datalist {
+  width: 100%;
 }
 
-.tag{
-    align-self: right;
-    background-color: crimson;
-    padding: 1rem 2rem;
-}
 input::-webkit-input-placeholder {
-    color: #fff;
+  color: #fff;
 }
 
-#search:focus{
-    border: none;
+#search:focus {
+  border: none;
 }
+
 .input:focus + .underline {
-    transform: scale(1);
+  transform: scale(1);
 }
 
 input:focus {
-    outline-width: 0;
+  outline-width: 0;
 }
+
 .underline {
-    background-color: dodgerblue;
-    display: block;
-    height: 0.01rem;
-    -webkit-transform: scale(0, 1);
-    transform: scale(0, 1);
-    -webkit-transition: all 0.1s ease-in-out;
-    transition: all 0.1s ease-in-out;
-    width: 100%;
-    z-index: 100;
+  background-color: dodgerblue;
+  display: block;
+  height: 0.01rem;
+  -webkit-transform: scale(0, 1);
+  transform: scale(0, 1);
+  -webkit-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+  width: 100%;
+  z-index: 100;
 }
+
+div {
+  width: 5rem;
+  height: 5rem;
+  position: absolute;
+  right: 4rem;
+  bottom: 3rem;
+}
+div .next {
+  width: 100%;
+  height: auto;
+  margin: 0 2rem;
+  cursor: pointer;
+  overflow: visible;
+  fill: #fff;
+}
+div .next rect {
+  fill: transparent;
+}
+div .next polygon, div .next path {
+  transition: all 0.2s ease-in-out;
+}
+div .next:hover polygon, div .next:hover path {
+  transition: all 0.2s ease-in-out;
+  fill: dodgerblue;
+}
+div .next:hover .arrow {
+  animation: arrow-anim 1s ease-in-out infinite;
+}
+div .next:hover .arrow-fixed {
+  animation: arrow-fixed-anim 1s ease-in-out infinite;
+}
+
+@keyframes arrow-anim {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  5% {
+    transform: translateX(-0.1rem);
+  }
+  100% {
+    transform: translateX(0.8rem);
+    opacity: 0;
+  }
+}
+@keyframes arrow-fixed-anim {
+  5% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/*# sourceMappingURL=search-style.css.map */
