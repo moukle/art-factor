@@ -19,10 +19,10 @@ async function fetchSuggestions(input){
 
     data.forEach( (el) => {
         const {label, url} = el;
-        const fact = el.class;
+        const className = el.class;
         let option = document.createElement('option');
 
-        option.textContent = label+ '\t' + fact;
+        option.textContent = label+ '\t' + className;
         option.value = label;
 
         suggestion_list.appendChild(option);
