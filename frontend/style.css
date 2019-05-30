@@ -1,56 +1,56 @@
 * {
-  font-family: "Playfair Display";
-  letter-spacing: 0.08rem;
-  color: #FFF;
-  padding: 0;
-  margin: 0; }
+    font-family: "Playfair Display";
+    letter-spacing: 0.08rem;
+    color: #FFF;
+    padding: 0;
+    margin: 0; }
 
 body {
-  display: flex;
-  justify-content: center;
-  vertical-align: middle;
-  flex-direction: column;
-  height: 100vh;
-  width: 100%;
-  margin: 0;
-  background-color: #000; }
+    display: flex;
+    justify-content: center;
+    vertical-align: middle;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    background-color: #000; }
 
 header {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  padding: 0.8rem 1.4rem;
-  margin: 0; }
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 0.8rem 1.4rem;
+    margin: 0; }
 
 button {
-  background-color: transparent;
-  border-radius: 10rem;
-  border: 0.1rem solid #0000FF;
-  color: #0000FF;
-  padding: 1rem 2rem;
-  margin: 2rem auto;
-  width: fit-content; }
+    background-color: transparent;
+    border-radius: 10rem;
+    border: 0.1rem solid #0000FF;
+    color: #0000FF;
+    padding: 1rem 2rem;
+    margin: 2rem auto;
+    width: fit-content; }
 
 h2 {
-  font-size: 1.3rem;
-  letter-spacing: 0.1rem; }
+    font-size: 1.3rem;
+    letter-spacing: 0.1rem; }
 
 [class^='fact'] {
-  width: 70%;
-  min-width: 20rem;
-  max-width: 80rem;
-  margin: 0.3rem auto;
-  background-color: #FF0000;
-  font-family: "Helvetica";
-  border: none;
-  color: #FFF; }
+    width: 70%;
+    min-width: 20rem;
+    max-width: 80rem;
+    margin: 0.3rem auto;
+    background-color: #FF0000;
+    font-family: "Helvetica";
+    border: none;
+    color: #FFF; }
 
 [class$='true'] {
-  width: 70%;
-  min-width: 20rem;
-  max-width: 80rem;
-  margin: 0.3rem auto;
-  background-color: #FFF;
-  color: #000; }
+    width: 70%;
+    min-width: 20rem;
+    max-width: 80rem;
+    margin: 0.3rem auto;
+    background-color: #FFF;
+    color: #000; }
 
 /*# sourceMappingURL=style.css.map */

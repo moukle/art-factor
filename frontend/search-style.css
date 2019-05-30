@@ -1,0 +1,58 @@
+/**
+============
+SEARCH STYLE
+============
+*/
+.wrapper {
+    background-color: transparent;
+    border: none;
+    height: auto;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.input {
+    background-color: transparent;
+    border: none;
+    /*border-bottom: 0.01rem solid #fff;*/
+
+    color: #fff;
+    font-size: 1em;
+    position: relative;
+    width: 100%;
+}
+
+datalist{
+    width: 100%;
+}
+
+.tag{
+    align-self: right;
+    background-color: crimson;
+    padding: 1rem 2rem;
+}
+input::-webkit-input-placeholder {
+    color: #fff;
+}
+
+#search:focus{
+    border: none;
+}
+.input:focus + .underline {
+    transform: scale(1);
+}
+
+input:focus {
+    outline-width: 0;
+}
+.underline {
+    background-color: dodgerblue;
+    display: block;
+    height: 0.01rem;
+    -webkit-transform: scale(0, 1);
+    transform: scale(0, 1);
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+    width: 100%;
+    z-index: 100;
+}
