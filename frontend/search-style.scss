@@ -5,6 +5,13 @@ SEARCH STYLE
 */
 $accent_color: #00FFFF;
 
+* {
+    font-family: "Playfair Display", sans-serif;
+    letter-spacing: 0.08rem;
+    color: #FFF;
+    padding: 0;
+    margin: 0; }
+
 body{
     height: 100vh;
     display: flex;
@@ -13,6 +20,20 @@ body{
     color: #fff;
     background-color: #000;
 }
+
+h2 {
+    margin: 0 1.4rem;
+    font-size: 1.3rem;
+    letter-spacing: 0.1rem;
+}
+header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 0.8rem 1.4rem;
+    margin: 0;
+}
+
 .wrapper {
     display: inline-flex;
     justify-content: center;
