@@ -1,5 +1,5 @@
 * {
-    font-family: "Playfair Display";
+    font-family: "Playfair Display", sans-serif;
     letter-spacing: 0.08rem;
     color: #FFF;
     padding: 0;
@@ -41,7 +41,7 @@ h2 {
     max-width: 80rem;
     margin: 0.3rem auto;
     background-color: #FF0000;
-    font-family: "Helvetica";
+    font-family: "Helvetica", sans-serif;
     border: none;
     color: #FFF; }
 
@@ -52,5 +52,3 @@ h2 {
     margin: 0.3rem auto;
     background-color: #FFF;
     color: #000; }
-
-/*# sourceMappingURL=style.css.map */

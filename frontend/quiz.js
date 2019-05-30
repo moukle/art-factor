@@ -1,5 +1,5 @@
-// let base_url = "http://localhost:5000/api/fact";
-let base_url = "http://192.168.99.100:5000/api/fact";
+let base_url = "http://localhost:5000/api/fact";
+// let base_url = "http://192.168.99.100:5000/api/fact";
 
 async function getFacts2(){
     const response = await fetch(base_url);
