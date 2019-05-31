@@ -16,8 +16,14 @@ def get_random_triple(isTrue=True, subject=''):
         return true_row
     else:
         while(True):
-            true_row = get_data_on_ressource(subject)
+            true_row = get_data_on_ressource()
+            #print(subject)
+            while str(true_row) == "":
+                true_row = get_data_on_ressource()
+            #true_row = get_data_on_ressource(subject)
             alternate_row = get_data_on_ressource()
+            while str(alternate_row) == "":
+                alternate_row = get_data_on_ressource()
             #dont mix same elements
             if true_row[0] == alternate_row[0]:
                 print(true_row)
