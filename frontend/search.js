@@ -22,7 +22,7 @@ async function fetchSuggestions(input){
         const className = el.class;
         let option = document.createElement('option');
 
-        option.textContent = label+ '\t' + className;
+        option.textContent = className;
         option.value = label;
 
         suggestion_list.appendChild(option);
