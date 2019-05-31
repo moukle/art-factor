@@ -5,6 +5,13 @@ pip install --user pipenv       # add pipenv to $PATH if not found
 pipenv install                  # install required packages
 pipenv run python server.py     # launch server
 ```
+- on `Windows` try:
+
+``` sh
+pip install --user pipenv       # add pipenv to $PATH if not found
+python -m pipenv install        # install required packages
+python -m pipenv run python server.py     # launch server
+```
 
 ## API Usage
 Launch server and visit [the servers swagger documentation](http://localhost:5000/api/ui/) for HTTP REST documentation.

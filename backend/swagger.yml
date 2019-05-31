@@ -16,21 +16,16 @@ paths:
     get:
       operationId: services.fact.read_true_false_false
       tags:
-        - Statement
         - Fact
       summary: Read true random fact(s) from ArtOntolgy
       description: Read true random fact(s) from ArtOntolgy
-      # parameters:
-        # - name: length
-        #   in: query
-        #   type: integer
-        #   description: Number of people to get from people
-        #   required: false
-        # - name: offset
-        #   in: query
-        #   type: integer
-        #   description: Offset from beginning of list where to start gathering people
-        #   required: false
+      parameters:
+          - in: query
+            name: persons
+            type: array
+            items:
+              type: string
+            required: False
       responses:
         200:
           description: Successfully read fact list operation
@@ -50,4 +45,31 @@ paths:
                       type: string
                     trueFact:
                       type: boolean
-
+  /search:
+    get:
+      operationId: services.elastic.search
+      tags:
+        - ElasticSearch
+      summary: Returns fuzzy result matching query from Elastic index
+      description: Returns fuzzy result matching query from Elastic index
+      parameters:
+          - in: query
+            name: fuzzy
+            type: string
+            description: String to fuzzy on Elastic Index
+            required: true
+      responses:
+        200:
+          description: Found following results matching fuzzyquery
+          schema:
+            type: array
+            items:
+                type: array
+                items:
+                  properties:
+                    class:
+                      type: string
+                    uri:
+                      type: string
+                    label:
+                      type: string
