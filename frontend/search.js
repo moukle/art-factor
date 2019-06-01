@@ -1,7 +1,9 @@
 let search_url = "http://localhost:5000/api/search";
 
 function next(){
-    location.href = "./quiz.html";
+    let suggestion_list = document.getElementById('filter');
+    location.href = "./quiz.html" + '#' + suggestion_list.dataset.uri;
+    console.log('URI: '+ suggestion_list.dataset.uri);
 }
 
 function delete_suggestions(list){
@@ -18,12 +20,14 @@ async function fetchSuggestions(input){
     let data = await response.json();
 
     data.forEach( (el) => {
-        const {label, url} = el;
+        const {label, uri} = el;
         const className = el.class;
         let option = document.createElement('option');
-
-        option.textContent = className;
+        suggestion_list.dataset.uri = uri;
+        // alert(suggestion_list.dataset.uri);
+        // document.getElementById('filtered_search').value(uri);
         option.value = label;
+        option.textContent = className;
 
         suggestion_list.appendChild(option);
     });
