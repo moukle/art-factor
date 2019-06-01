@@ -1,110 +1,104 @@
-import rdflib
 
-def load_ontology():
-    ONTOLOGY_PATH = "ontologies/ArtOntology.ttl"
-    print("Loading ArtOntology ...")
-    graph = rdflib.Graph()
-    graph.parse(location=ONTOLOGY_PATH, format="n3")
-    print("Finished loading ArtOntology")
-    return graph
+import random
+from SPARQLWrapper import SPARQLWrapper, JSON
 
 
-#returns true or false statement
-def get_random_triple(isTrue=True, subject=''):
-    if isTrue:
-        true_row = get_data_on_ressource(subject)
-        return true_row
+def query(body):
+    fuseki_url = "http://localhost:3030/artontology/sparql"
+    sparql = SPARQLWrapper(fuseki_url)
+    sparql.setQuery(body)
+    sparql.setReturnFormat(JSON)
+    result = sparql.query().convert()
+    return result["results"]["bindings"]
+
+
+def get_fact(trueFact, subjects):
+    if subjects:
+        subj = random.choice(subjects)
     else:
-        while(True):
-            true_row = get_data_on_ressource(subject)
-            alternate_row = get_data_on_ressource()
-            #dont mix same elements
-            if true_row[0] == alternate_row[0]:
-                print(true_row)
-                print(alternate_row)
-                print(1)
-                continue
-            #lies arent lies if the object doesnt change
-            if true_row[-1] == alternate_row[-1]:
-                print(2)
-                continue
-            #kinda basic and not very extendable
-            alternate_row = alternate_row[2:4]
-            true_row = true_row[0:2]
-            #print(true_row)
-            #print(alternate_row)
-            s = true_row + alternate_row
-            #print(s)
-            return s
+        import elasticSearch.elasticSearch_api as es
+        subj = es.random_uri()
+        subj = "wd:" + str.format(subj).split('/')[-1]
 
-
-def get_data_on_ressource(ressource=''):
-    if ressource == '':
-        #no ressource to get data on. Retrieve data from a random person
-        ressource = get_person()
-        print(ressource)
-        for row in ressource:
-            random_person = "wd:" + str.format(row[0]).split('/')[-1]
+    if trueFact:
+        return get_true_fact(subj)
     else:
-        random_person = "wd:" + str.format(ressource).split('/')[-1]
-    print(random_person)
-    random_person_query = "BIND(" + random_person + " AS ?person)."
-    filter_list = """(rdf:type, rdfs:label, :gender, :image)"""
-    res = ontology.query("""
-                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                PREFIX wd: <http://www.wikidata.org/entity/>
-                PREFIX : <http://h-da.de/fbi/artontology/>
-
-                SELECT ?person ?s ?p ?o
-                WHERE {
-                """ + random_person_query + """ 
-                """ + random_person + """ ?p ?o;
-                    rdfs:label ?s.
-                FILTER(?p NOT IN """ + filter_list + """)
-                }
-                ORDER BY RAND()
-                LIMIT 1 
-                """)
-    for row_person in res:
-        print(row_person)
-    for row_person in res:
-        return row_person
+        return get_false_fact(subj)
 
 
+def get_false_fact(subj_1):
+    filter_list = """ (rdf:type, rdfs:label, :gender, :image) """
+    bind = "BIND(" + subj_1 + " AS ?subj)."
 
-def get_person():
-    res_random = ontology.query("""
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX wd: <http://www.wikidata.org/entity/>
-    PREFIX : <http://h-da.de/fbi/artontology/>
-
-    SELECT ?p ?n
-    WHERE {
-        ?p a :person;
-            rdfs:label ?n.
-    }
-    ORDER BY RAND()
-    LIMIT 1
-     """)
-    return res_random
-
-
-def get_all_persons():
-    res_all_persons = ontology.query("""
+    res_random = query("""
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         PREFIX wd: <http://www.wikidata.org/entity/>
         PREFIX : <http://h-da.de/fbi/artontology/>
 
-        SELECT ?p ?n
+        SELECT ?subj ?label ?predicate ?obj
         WHERE {
-            ?p a :person;
-                rdfs:label ?n.
+            {
+                SELECT ?subj ?label ?subj2 WHERE { 
+                    """ + bind + """
+                    ?subj a ?class;
+                        rdfs:label ?label.
+                    ?subj2 a ?class.
+                    FILTER(?subj != ?subj2).
+                } ORDER BY RAND() LIMIT 1
+            }
+            ?subj ?predicate ?o1.
+            ?subj2 ?predicate ?obj.
+            FILTER(?o1 != ?obj).
+            FILTER(?predicate NOT IN""" + filter_list + """).
+        } ORDER BY RAND() LIMIT 1
+    """)
+
+    if res_random:
+        return res_random[0]
+    else:
+        get_false_fact(subj_1)
+
+
+def get_true_fact(subj):
+    filter_list = """(rdf:type, rdfs:label, :gender, :image)"""
+    bind = "BIND(" + subj + " AS ?subj)."
+
+    res_random = query("""
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX wd: <http://www.wikidata.org/entity/>
+        PREFIX : <http://h-da.de/fbi/artontology/>
+
+        SELECT ?subj ?label ?predicate ?obj
+        WHERE { 
+            """ + bind + """
+            ?subj a ?class;
+                rdfs:label ?label;
+                ?predicate ?obj.
+            FILTER(?predicate NOT IN """ + filter_list + """)
+        }
+        ORDER BY RAND()
+        LIMIT 1 
+    """)
+
+    if res_random:
+        return res_random[0]
+    else:
+        get_true_fact(subj)
+
+
+def get_all_persons():
+    res_all_persons = query("""
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX wd: <http://www.wikidata.org/entity/>
+        PREFIX : <http://h-da.de/fbi/artontology/>
+
+        SELECT ?person ?name
+        WHERE {
+            ?person a :person;
+                rdfs:label ?name.
         }
     """)
     return res_all_persons
-
-
-ontology = load_ontology()

@@ -21,11 +21,12 @@ paths:
       description: Read true random fact(s) from ArtOntolgy
       parameters:
           - in: query
-            name: persons
+            name: subjects
             type: array
             items:
               type: string
             required: False
+            description: List of URIs of subjects
       responses:
         200:
           description: Successfully read fact list operation
