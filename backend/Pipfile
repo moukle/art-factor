@@ -9,7 +9,6 @@ pylint = "*"
 [packages]
 flask = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
-rdflib = "*"
 flask-cors = "*"
 elasticsearch = "*"
 sparqlwrapper = "*"
