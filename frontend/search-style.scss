@@ -34,6 +34,9 @@ header {
     margin: 0;
 }
 
+#filtered_search{
+    visibility: collapse;
+}
 .wrapper {
     display: inline-flex;
     justify-content: center;
