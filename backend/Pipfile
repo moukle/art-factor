@@ -12,6 +12,7 @@ connexion = {extras = ["swagger-ui"],version = "*"}
 rdflib = "*"
 flask-cors = "*"
 elasticsearch = "*"
+cfg = "*"
 
 [requires]
 python_version = "3.7"

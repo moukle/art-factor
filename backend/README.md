@@ -12,6 +12,15 @@ pip install --user pipenv       # add pipenv to $PATH if not found
 python -m pipenv install        # install required packages
 python -m pipenv run python server.py     # launch server
 ```
+## ElasticSearch
+Windows: Download binaries from official site, execute batch file
+
+## NLTK
+Install from official site. Theres a setup file for 32-bit machines. Otherwise run source files and follow the instructions in the INSTALL file
+Then:
+pip install nltk 
+import nltk
+nltk.download() 
 
 ## API Usage
 Launch server and visit [the servers swagger documentation](http://localhost:5000/api/ui/) for HTTP REST documentation.

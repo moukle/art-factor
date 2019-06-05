@@ -1,17 +1,19 @@
 from ontologyAPI.ontology_api import get_random_triple
 import random
+from nlp_sentbuilder import sentbuilder
 
 def statement(t1, f1, f2):
     statement = [ t1, f1, f2 ]
     return statement
 
-def fact(r, s, o, p, factTrue=True):
+def fact(r, s, o, p, sent, factTrue=True):
     fact = { 
         "Fact": {
             "resource": r,
             "subject": s,
             "predicate": p,
             "object": o,
+            "statement": sent,
             "factTrue": factTrue
         }
     }
@@ -21,26 +23,39 @@ def read_true_false_false(persons=[]):
     if persons != []:
         rnd_person = random.choice(persons)
         r, s, p, o = get_random_triple(False, rnd_person)
-        lie1 = fact(r, s, o, p, False)
+        sent = sentbuilder.generate_sentence(s, o, p)
+        #print("NLP string should be here:")
+        #print(sent)
+        #print("===========================")
+        s = sent
+        lie1 = fact(r, s, o, p, sent, False)
 
         rnd_person = random.choice(persons)
         r, s, p, o = get_random_triple(False, rnd_person)
-        lie2 = fact(r, s, o, p, False)
+        sent = sentbuilder.generate_sentence(s, o, p)
+        lie2 = fact(r, s, o, p, sent, False)
 
         rnd_person = random.choice(persons)
         r, s, p, o = get_random_triple(True, rnd_person)
-        truth = fact(r, s, o, p, True)
+        sent = sentbuilder.generate_sentence(s, o, p)
+        truth = fact(r, s, o, p, sent, True)
 
         return statement(truth, lie1, lie2)
     else:
         r, s, p, o = get_random_triple(False)
-        lie1 = fact(r, s, o, p, False)
+        sent = sentbuilder.generate_sentence(s, p, o)
+        #print("NLP string should be here:")
+       # print(sent)
+        #print("===========================")
+        lie1 = fact(r, s, o, p, sent, False)
 
         r, s, p, o = get_random_triple(False)
-        lie2 = fact(r, s, o, p, False)
+        sent = sentbuilder.generate_sentence(s, p, o)
+        lie2 = fact(r, s, o, p, sent, False)
 
         r, s, p, o = get_random_triple(True)
-        truth = fact(r, s, o, p, True)
+        sent = sentbuilder.generate_sentence(s, p, o)
+        truth = fact(r, s, o, p, sent, True)
 
         return statement(truth, lie1, lie2)
 
