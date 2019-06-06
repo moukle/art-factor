@@ -17,7 +17,7 @@ def get_fact(trueFact, subjects):
     else:
         import elasticSearch.elasticSearch_api as es
         subj = es.random_uri()
-        subj = "wd:" + str.format(subj).split('/')[-1]
+    subj = "wd:" + str.format(subj).split('/')[-1]
 
     if trueFact:
         return get_true_fact(subj)
