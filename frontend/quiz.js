@@ -27,8 +27,8 @@ async function transcriptSpeech() {
         let fuzzySet = FuzzySet(button_txts);
         let res = fuzzySet.get(speechToText);
 
-        for (let i = 0; i < res.length; i++) {
-            console.log('fuzzy:', res[i][1],  res[i][0]);
+        for (let i = 0; i < fact_buttons.length; i++) {
+            // console.log('fuzzy:', res[i][1],  res[i][0], fact_buttons[i].textContent);
             if (res[0][1] === fact_buttons[i].textContent) {
                 console.log('got it!');
                 validate(fact_buttons[i]);
