@@ -1,4 +1,8 @@
 # Backend for ArtFactor
+## Requirements
+- Running ElasticSearch server
+- Fuseki Server with loaded artontology `localhost:3030/artontology`
+
 ## Usage
 ``` sh
 pip install --user pipenv       # add pipenv to $PATH if not found

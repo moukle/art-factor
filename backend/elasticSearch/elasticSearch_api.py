@@ -1,7 +1,7 @@
-from ontologyAPI.ontology_api import get_all_persons
-from elasticsearch import Elasticsearch
-
+import ontologyAPI.ontology_api as ontology
 import json
+
+from elasticsearch import Elasticsearch
 
 
 def connect_elasticsearch():
@@ -16,29 +16,6 @@ def connect_elasticsearch():
 
 def create_person_index():
     settings = {
-        # "settings": {
-        #     "number_of_shards": 1,
-        #     "number_of_replicas": 0,
-        #     "analysis": {
-        #         "filter": {
-        #             "edge_ngram_filter": {
-        #                 "type": "edge_ngram",
-        #                 "min_gram": 1,
-        #                 "max_gram": 10
-        #             }
-        #         },
-        #         "analyzer": {
-        #             "edge_ngram_analyzer": {
-        #                 "type": "custom",
-        #                 "tokenizer": "standard",
-        #                 "filter": [
-        #                     "lowercase",
-        #                     "edge_ngram_filter"
-        #                 ]
-        #             }
-        #         }
-        #     }
-        # },
         "settings": {
             "analysis": {
                 "analyzer": {
@@ -87,9 +64,10 @@ def create_person_index():
 
 def store_all_persons():
     print('Storing all persons in Elasticsearch index ...')
-    all_persons = get_all_persons()
+    all_persons = ontology.get_all_persons()
     for person in all_persons:
-        uri, name = person
+        uri = person["person"]["value"]
+        name = person["name"]["value"]
         doc = {'uri': uri, 'name': name}
         es.index(index='artontology', doc_type='person', body=doc)
     print("Finished Elasticsearch storing")
@@ -103,10 +81,16 @@ def search_persons(name):
     return res
 
 
+def random_uri():
+    query = { "size": 1, "query": { "function_score": { "random_score": {} }}}
+    res = es.search(index='artontology', body=query)
+    return res["hits"]["hits"][0]["_source"]["uri"]
+
+
 def clean_index():
     es.indices.delete(index='*')
     create_person_index()
     store_all_persons()
 
 es = connect_elasticsearch()
-clean_index()
+# clean_index()

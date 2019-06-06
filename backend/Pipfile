@@ -9,10 +9,13 @@ pylint = "*"
 [packages]
 flask = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
-rdflib = "*"
 flask-cors = "*"
 elasticsearch = "*"
+<<<<<<< HEAD
 cfg = "*"
+=======
+sparqlwrapper = "*"
+>>>>>>> QuerysOnFuseki
 
 [requires]
 python_version = "3.7"
