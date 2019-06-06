@@ -11,7 +11,7 @@ def fact(triple, factTrue=True):
     s = triple["label"]["value"]
     p = triple["predicate"]["value"]
     o = triple["obj"]["value"]
-    sentence = nlp.generate_sentence(s, o, p)
+    sentence = nlp.generate_sentence(s, p, o)
 
     fact = { 
         "Fact": {

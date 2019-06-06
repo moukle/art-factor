@@ -13,7 +13,6 @@ def generate_sentence(subject, predicate, object, useTemplate=False):
 
         #very simplified randomization string generation because we currently only have two valiid compositions
         for sentence in generate(grammar, n=10):
-            print(' '.join(sentence))
             if rand < 1:
                 return ' '.join(sentence)
             else:
