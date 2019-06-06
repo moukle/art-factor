@@ -24,8 +24,7 @@ async function fetchSuggestions(input){
         const className = el.class;
         let option = document.createElement('option');
         suggestion_list.dataset.uri = uri;
-        // alert(suggestion_list.dataset.uri);
-        // document.getElementById('filtered_search').value(uri);
+
         option.value = label;
         option.textContent = className;
 
