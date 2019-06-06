@@ -8,9 +8,9 @@ def connect_elasticsearch():
     _es = None
     _es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
     if _es.ping():
-        print('Connected to Elasticsearch')
+        print('ELASTIC :: Connected to Elasticsearch')
     else:
-        print('Awww it could not connect!')
+        print('ELASTIC :: Awww it could not connect!')
     return _es
 
 
@@ -63,14 +63,19 @@ def create_person_index():
     es.indices.create(index='artontology', ignore=400, body=settings)
 
 def store_all_persons():
-    print('Storing all persons in Elasticsearch index ...')
+    print("ELASTIC :: Storing all persons in Elasticsearch index ...")
     all_persons = ontology.get_all_persons()
+    documents = []
     for person in all_persons:
         uri = person["person"]["value"]
         name = person["name"]["value"]
-        doc = {'uri': uri, 'name': name}
-        es.index(index='artontology', doc_type='person', body=doc)
-    print("Finished Elasticsearch storing")
+
+        action = { 'index': { '_index': 'artontology', '_type': 'person' }}
+        doc = { 'uri': uri, 'name': name }
+        documents.append(action)
+        documents.append(doc)
+    es.bulk(documents)
+    print("ELASTIC :: Finished ElasticSearch storing")
 
 
 def search_persons(name):
@@ -87,10 +92,9 @@ def random_uri():
     return res["hits"]["hits"][0]["_source"]["uri"]
 
 
-def clean_index():
+def create_clean_index():
     es.indices.delete(index='*')
     create_person_index()
     store_all_persons()
 
 es = connect_elasticsearch()
-# clean_index()
