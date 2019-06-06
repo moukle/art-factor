@@ -11,11 +11,8 @@ flask = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 flask-cors = "*"
 elasticsearch = "*"
-<<<<<<< HEAD
 cfg = "*"
-=======
 sparqlwrapper = "*"
->>>>>>> QuerysOnFuseki
 
 [requires]
 python_version = "3.7"

@@ -15,51 +15,12 @@ def get_fact(trueFact, subjects):
     if subjects:
         subj = random.choice(subjects)
     else:
-<<<<<<< HEAD
-        while(True):
-            true_row = get_data_on_ressource()
-            #print(subject)
-            while str(true_row) == "":
-                true_row = get_data_on_ressource()
-            #true_row = get_data_on_ressource(subject)
-            alternate_row = get_data_on_ressource()
-            while str(alternate_row) == "":
-                alternate_row = get_data_on_ressource()
-            #dont mix same elements
-            if true_row[0] == alternate_row[0]:
-                print(true_row)
-                print(alternate_row)
-                print(1)
-                continue
-            #lies arent lies if the object doesnt change
-            if true_row[-1] == alternate_row[-1]:
-                print(2)
-                continue
-            #kinda basic and not very extendable
-            alternate_row = alternate_row[2:4]
-            true_row = true_row[0:2]
-            #print(true_row)
-            #print(alternate_row)
-            s = true_row + alternate_row
-            #print(s)
-            return s
-
-
-def get_data_on_ressource(ressource=''):
-    if ressource == '':
-        #no ressource to get data on. Retrieve data from a random person
-        ressource = get_person()
-        print(ressource)
-        for row in ressource:
-            random_person = "wd:" + str.format(row[0]).split('/')[-1]
-=======
         import elasticSearch.elasticSearch_api as es
         subj = es.random_uri()
     subj = "wd:" + str.format(subj).split('/')[-1]
 
     if trueFact:
         return get_true_fact(subj)
->>>>>>> QuerysOnFuseki
     else:
         return get_false_fact(subj)
 
