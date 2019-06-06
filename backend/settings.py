@@ -1,7 +1,7 @@
-# DEPRECATED -- maybe for later use
+print("settings.py :: You may disable/enable inserting data in Fuseki / Elastic [DEBUG / INFO]") 
 
-from ontologyAPI.api import load_ontology
+import ontologyAPI.ontology_api as ontology
+import elasticSearch.elasticSearch_api as elastic
 
-def init():
-    global ontologyGraph
-    ontologyGraph = load_ontology()
+ontology.insert_artontology() # COMMENT TO DISABLE
+elastic.create_clean_index() # COMMENT TO DISABLE

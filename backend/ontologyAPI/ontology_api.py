@@ -1,4 +1,5 @@
 import random
+import requests
 from SPARQLWrapper import SPARQLWrapper, JSON
 
 
@@ -9,6 +10,16 @@ def query(body):
     sparql.setReturnFormat(JSON)
     result = sparql.query().convert()
     return result["results"]["bindings"]
+
+
+def insert_artontology():
+    print("FUSEKI :: Inserting ArtOntology in Fuseki ...")
+    fuseki_url = "http://localhost:3030/"
+    file = open('ontologies/ArtOntology_main.ttl', encoding='iso-8859-1')
+    requests.delete(fuseki_url+'$/datasets/artontology') # delete existing dataset
+    requests.post(fuseki_url+'$/datasets', data={'dbName': 'artontology', 'dbType': 'tdb'}) # create new dataset
+    requests.post(fuseki_url+'artontology/data', headers={'Content-type': 'text/turtle'}, data=file ) # insert data
+    print("FUSEKI :: Inserting ArtOntology finished")
 
 
 def get_fact(trueFact, subjects):
