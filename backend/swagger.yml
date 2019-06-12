@@ -48,6 +48,20 @@ paths:
                       type: string
                     trueFact:
                       type: boolean
+  /answer:
+    get:
+      operationId: services.answer.log_answer
+      tags:
+        - Answer
+      summary: Logs for each user if answered right or wrong
+      parameters:
+        -in: query
+        userId: 
+          type: int
+        selectedTrueFact: 
+          type: boolean
+        required: true
+
   /search:
     get:
       operationId: services.elastic.search
