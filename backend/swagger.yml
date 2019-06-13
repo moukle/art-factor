@@ -55,13 +55,17 @@ paths:
         - Answer
       summary: Logs for each user if answered right or wrong
       parameters:
-        -in: query
-        userId: 
-          type: int
-        selectedTrueFact: 
+        - in: query
+          name: userId
+          type: integer
+          required: true
+        - in: query
+          name: selectedTrueFact
           type: boolean
-        required: true
-
+          required: true
+      responses:
+        '201':
+          description: Logged
   /search:
     get:
       operationId: services.elastic.search
