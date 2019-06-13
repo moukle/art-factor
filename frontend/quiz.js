@@ -1,5 +1,9 @@
 let base_url = "http://localhost:5000/api/fact";
 
+/**
+ * show loader on start and
+ * fetch facts from server
+ */
 $(document).ready(function () {
     let loader = document.getElementById('loader');
     let btn_group = document.getElementById('facts');
@@ -11,12 +15,19 @@ $(document).ready(function () {
     });
 });
 
+/***
+ * records audio and detects answers;
+ * answers will be matched with the fact sentences
+ * @returns {Promise<void>}
+ */
 async function transcriptSpeech() {
     let recognition = new webkitSpeechRecognition();
     recognition.lang = 'en-US';
+
     recognition.onresult = (event) => {
         const speechToText = event.results[0][0].transcript;
-        console.log('Recorded:', speechToText);
+
+        console.log('Recorded Audio:', speechToText);
         let fact_buttons = document.getElementsByClassName('fact');
 
         let button_txts = [];
@@ -24,11 +35,12 @@ async function transcriptSpeech() {
             button_txts.push(fact.textContent);
         }
 
+        // fuzzy string matching
         let fuzzySet = FuzzySet(button_txts);
         let res = fuzzySet.get(speechToText);
 
         for (let i = 0; i < fact_buttons.length; i++) {
-            // console.log('fuzzy:', res[i][1],  res[i][0], fact_buttons[i].textContent);
+
             if (res[0][1] === fact_buttons[i].textContent) {
                 console.log('got it!');
                 validate(fact_buttons[i]);
@@ -37,8 +49,10 @@ async function transcriptSpeech() {
             }
         }
     };
+    // start recording audio
     recognition.start();
 
+    // restart recording audio
     recognition.onend = (event)=>{
         recognition.start();
     };
@@ -46,7 +60,8 @@ async function transcriptSpeech() {
 
 /**
  * validate whether player guessed correctly
- * @param btn pressed by player
+ * and return feedback accordingly
+ * @param btn was pressed by a player
  */
 function validate(btn) {
     if (btn.value === 'true') {
@@ -79,7 +94,7 @@ function reset(fact_buttons) {
 
 /**
  * @var <json> data contains formatted response of http request
- * add facts to the button
+ * add facts sentences to the button text
  * @returns {Promise<void>}
  */
 async function fetchFacts() {
@@ -94,10 +109,9 @@ async function fetchFacts() {
 
     data.forEach((el, index) => {
         const {Fact} = el;
-        const {factTrue, object, predicate, resource, subject} = Fact;
-        let formatted_predicate = predicate.match(/[^/]+(?=\/$|$)/i);
+        const {factTrue, sentence} = Fact;
 
-        fact_buttons[index].textContent = subject + ' ' + formatted_predicate.toString().replace(/_/g, " ") + ' ' + object;
+        fact_buttons[index].textContent = sentence;
         fact_buttons[index].value = factTrue;
     });
 }

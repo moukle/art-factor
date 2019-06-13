@@ -17,6 +17,8 @@ async function fetchSuggestions(input){
     delete_suggestions(suggestion_list);
 
     const response = await fetch(search_url+`?fuzzy=${input.value}`);
+    console.log('Input', input.value);
+
     let data = await response.json();
 
     data.forEach( (el) => {
