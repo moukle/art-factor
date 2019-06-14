@@ -57,7 +57,9 @@ def get_false_fact(subj_1):
                     FILTER(?subj != ?subj2).
                 } ORDER BY RAND() LIMIT 1
             }
+            ?subj ?p1 ?obj1.
             ?subj2 ?predicate ?obj.
+            FILTER(?obj1 != ?obj).
             FILTER(?predicate NOT IN""" + filter_list + """).
         } ORDER BY RAND() LIMIT 1
     """)
