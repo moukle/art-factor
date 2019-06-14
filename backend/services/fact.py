@@ -1,9 +1,12 @@
 import ontologyAPI.ontology_api as ontologyAPI
 import nlp_sentbuilder.sentbuilder as nlp
+from services.answer import get_true_ratio_for_user
+
 import json
 
-def statement(t1, f1, f2):
-    statement = [ t1, f1, f2 ]
+def statement(truth, lies):
+    statement = [truth]
+    statement.extend(lies)
     return statement
 
 def fact(triple, factTrue=True):
@@ -25,9 +28,16 @@ def fact(triple, factTrue=True):
     }
     return fact
 
-def read_true_false_false(subjects=[]):
+def get_facts_for_user(userID, subjects=[]):
     truth = fact(ontologyAPI.get_fact(True, subjects), True)
-    lie_1 = fact(ontologyAPI.get_fact(False, subjects), False)
-    lie_2 = fact(ontologyAPI.get_fact(False, subjects), False)
 
-    return statement(truth, lie_1, lie_2)
+    lies = []
+    lies.append(fact(ontologyAPI.get_fact(False, subjects), False))
+
+    ratio = get_true_ratio_for_user(userID)
+    if ratio >= 0.2:
+        lies.append(fact(ontologyAPI.get_fact(False, subjects), False))
+    if ratio >= 0.8:
+        lies.append(fact(ontologyAPI.get_fact(False, subjects), False))
+
+    return statement(truth, lies)
