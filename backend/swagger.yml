@@ -14,12 +14,17 @@ basePath: /api
 paths:
   /fact:
     get:
-      operationId: services.fact.read_true_false_false
+      operationId: services.fact.get_facts_for_user
       tags:
         - Fact
-      summary: Read true random fact(s) from ArtOntolgy
-      description: Read true random fact(s) from ArtOntolgy
+      summary: Read true and false random fact(s) from ArtOntolgy
+      description: Read true and false random fact(s) from ArtOntolgy
       parameters:
+          - in: query
+            name: userID
+            type: integer
+            required: True
+            description: Facts for the user with id userID
           - in: query
             name: subjects
             type: array

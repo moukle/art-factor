@@ -9,11 +9,25 @@ $(document).ready(function () {
     let btn_group = document.getElementById('facts');
 
     fetchFacts().then(() => {
-        loader.className = loader.className.replace(/\bactive\b/g, "inactive");
-        btn_group.className = btn_group.className.replace(/\binactive\b/g, "active");
+        show_loader(false);
+        // loader.className = loader.className.replace(/\bactive\b/g, "inactive");
+        // btn_group.className = btn_group.className.replace(/\binactive\b/g, "active");
         transcriptSpeech();
     });
 });
+
+function show_loader(isShowing) {
+    let loader = document.getElementById('loader');
+    let btn_group = document.getElementById('facts');
+
+    if (isShowing) {
+        loader.className = loader.className.replace(/\binactive\b/g, "active");
+        btn_group.className = btn_group.className.replace(/\bactive\b/g, "inactive");
+    } else {
+        loader.className = loader.className.replace(/\bactive\b/g, "inactive");
+        btn_group.className = btn_group.className.replace(/\binactive\b/g, "active");
+    }
+}
 
 /***
  * records audio and detects answers;
@@ -30,32 +44,47 @@ async function transcriptSpeech() {
         console.log('Recorded Audio:', speechToText);
         let fact_buttons = document.getElementsByClassName('fact');
 
-        let button_txts = [];
-        for (let fact of fact_buttons) {
-            button_txts.push(fact.textContent);
-        }
 
         // fuzzy string matching
-        let fuzzySet = FuzzySet(button_txts);
-        let res = fuzzySet.get(speechToText);
+        let fuzzySet = FuzzySet(['A', 'B', 'C']);
+        let res = fuzzySet.get(speechToText, [0.51]);
 
-        for (let i = 0; i < fact_buttons.length; i++) {
+        if (res.isEmpty()) {
+            speak('SAY WHAT?');
+        }else {
+            let indexOfAnswer = res.indexOf(res[0][1]);
 
-            if (res[0][1] === fact_buttons[i].textContent) {
-                console.log('got it!');
-                validate(fact_buttons[i]);
-                fetchFacts();
-                return;
-            }
+
+            // for (let i = 0; i < fact_buttons.length; i++) {
+            //
+            //     if (res[0][1] === fact_buttons[i].textContent) {
+            console.log('got it!');
+            validate(fact_buttons[indexOfAnswer]);
+            fetchFacts();
+            // return;
+            //     }
+            // }
         }
     };
     // start recording audio
     recognition.start();
 
     // restart recording audio
-    recognition.onend = (event)=>{
+    recognition.onend = (event) => {
         recognition.start();
     };
+}
+
+
+function speak(speech) {
+    let synth = window.speechSynthesis;
+    let utterThis = new SpeechSynthesisUtterance(speech);
+
+    let voices = synth.getVoices();
+    utterThis.voice = voices[0];
+    utterThis.pitch = 10;
+    utterThis.rate = 10;
+    synth.speak(utterThis);
 }
 
 /**
@@ -64,10 +93,15 @@ async function transcriptSpeech() {
  * @param btn was pressed by a player
  */
 function validate(btn) {
+
     if (btn.value === 'true') {
         btn.className += " " + "true";
     } else
         btn.className += " " + "false";
+
+    setTimeout(() => {
+        show_loader(true);
+    }, 1300);
 }
 
 /**
@@ -99,11 +133,15 @@ function reset(fact_buttons) {
  */
 async function fetchFacts() {
     let filter_uri = window.location.hash.substring(1);
+    console.log('filtered:', filter_uri);
+
     let fact_buttons = document.getElementsByClassName('fact');
 
-    const response = await fetch(base_url + `?persons=${filter_uri}`);
+    console.log('fetch fact');
+    const response = await fetch(base_url + `?subjects=${filter_uri}`);
     let data = await response.json();
-
+    console.log('finished fetching');
+    show_loader(false);
     shuffleArray(data);
     reset(fact_buttons);
 
