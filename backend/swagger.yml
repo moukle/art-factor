@@ -14,12 +14,17 @@ basePath: /api
 paths:
   /fact:
     get:
-      operationId: services.fact.read_true_false_false
+      operationId: services.fact.get_facts_for_user
       tags:
         - Fact
-      summary: Read true random fact(s) from ArtOntolgy
-      description: Read true random fact(s) from ArtOntolgy
+      summary: Read true and false random fact(s) from ArtOntolgy
+      description: Read true and false random fact(s) from ArtOntolgy
       parameters:
+          - in: query
+            name: userID
+            type: integer
+            required: True
+            description: Facts for the user with id userID
           - in: query
             name: subjects
             type: array
@@ -55,13 +60,17 @@ paths:
         - Answer
       summary: Logs for each user if answered right or wrong
       parameters:
-        -in: query
-        userId: 
-          type: int
-        selectedTrueFact: 
+        - in: query
+          name: userId
+          type: integer
+          required: true
+        - in: query
+          name: selectedTrueFact
           type: boolean
-        required: true
-
+          required: true
+      responses:
+        '201':
+          description: Logged
   /search:
     get:
       operationId: services.elastic.search
