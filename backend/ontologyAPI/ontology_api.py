@@ -71,7 +71,7 @@ def get_false_fact(subj_1):
 
 
 def get_true_fact(subj):
-    filter_list = """(rdf:type, rdfs:label, :gender, :image)"""
+    filter_list = """(rdf:type, rdfs:label, :gender, :image, :influenced_by)"""
     bind = "BIND(" + subj + " AS ?subj)."
 
     res_random = query("""
