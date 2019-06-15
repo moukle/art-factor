@@ -140,7 +140,7 @@ async function fetchFacts() {
     let fact_buttons = document.getElementsByClassName('fact');
 
     console.log('fetch fact');
-    const response = await fetch(base_url + `?subjects=${filter_uri}`);
+    const response = await fetch(base_url + `?subjects=${filter_uri}&userID=666`);
     let data = await response.json();
     console.log('finished fetching');
     show_loader(false);
