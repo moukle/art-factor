@@ -57,7 +57,7 @@ async function transcriptSpeech() {
         let indexOfAnswer = fuzzyStrings.indexOf(res[0][1]);
 
         console.log('got it!', res);
-        console.log('index!', indexOfAnswer);
+
         validate(fact_buttons[indexOfAnswer]);
         fetchFacts();
 
@@ -65,11 +65,11 @@ async function transcriptSpeech() {
 
     recognition.onerror = (event) => {
         recognition.abort();
-        console.log('SPEECH FAIL');
+        console.log('Oops, speech recording failed...');
     };
     // restart recording audio
     recognition.onend = (event) => {
-        console.log('END');
+        console.log('speech recording ended...');
         recognition.start();
     };
 
@@ -93,7 +93,10 @@ function speak(speech) {
  * and return feedback accordingly
  * @param btn was pressed by a player
  */
-function validate(btn) {
+async function validate(btn) {
+    var isCorrect = (btn.value == 'true');
+    const response = await fetch("http://localhost:5000/api/answer" + `?userId=666&selectedTrueFact=${isCorrect}`);
+
     if (btn.value === 'true') {
         btn.className += " " + "true";
         speak('Correct! What a champ!');
@@ -145,6 +148,7 @@ async function fetchFacts() {
     reset(fact_buttons);
 
     data.forEach((el, index) => {
+        console.log('index:', index);
         const {Fact} = el;
         const {factTrue, sentence} = Fact;
 

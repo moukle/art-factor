@@ -12,6 +12,50 @@ function delete_suggestions(list){
     }
 }
 
+async function speechControl() {
+    let recognition = new webkitSpeechRecognition();
+    recognition.lang = 'en-US';
+
+    recognition.onresult = (event) => {
+        console.log("Got a result fro speech");
+        const speechToText = event.results[0][0].transcript;
+
+        console.log('Recorded Audio:', speechToText);
+        let fact_buttons = document.getElementsByClassName('fact');
+
+        // fuzzy string matching
+        const fuzzyStrings = ['OK', 'Next'];
+        let fuzzySet = FuzzySet(fuzzyStrings);
+        let res = fuzzySet.get(speechToText);
+
+        if (res === null) {
+            console.log('no result returned from speech');
+            return;
+        }
+        let indexOfAnswer = fuzzyStrings.indexOf(res[0][1]);
+
+        next();
+
+        console.log('got it!', res);
+
+        validate(fact_buttons[indexOfAnswer]);
+        fetchFacts();
+
+    };
+
+    recognition.onerror = (event) => {
+        recognition.abort();
+        console.log('Oops, speech recording failed...');
+    };
+    // restart recording audio
+    recognition.onend = (event) => {
+        console.log('speech recording ended...');
+        recognition.start();
+    };
+
+    recognition.start();
+}
+
 async function fetchSuggestions(input){
     let suggestion_list = document.getElementById('filter');
     delete_suggestions(suggestion_list);
@@ -20,7 +64,6 @@ async function fetchSuggestions(input){
     console.log('Input', input.value);
 
     let data = await response.json();
-
     data.forEach( (el) => {
         const {label, uri} = el;
         const className = el.class;
@@ -32,4 +75,5 @@ async function fetchSuggestions(input){
 
         suggestion_list.appendChild(option);
     });
+
 }
