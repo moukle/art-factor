@@ -39,40 +39,41 @@ async function transcriptSpeech() {
     recognition.lang = 'en-US';
 
     recognition.onresult = (event) => {
+        console.log("Got a result fro speech");
         const speechToText = event.results[0][0].transcript;
 
         console.log('Recorded Audio:', speechToText);
         let fact_buttons = document.getElementsByClassName('fact');
 
-
         // fuzzy string matching
-        let fuzzySet = FuzzySet(['A', 'B', 'C']);
-        let res = fuzzySet.get(speechToText, [0.51]);
+        const fuzzyStrings = ['Option A', 'Option B', 'Option C'];
+        let fuzzySet = FuzzySet(fuzzyStrings);
+        let res = fuzzySet.get(speechToText);
 
-        if (res.isEmpty()) {
-            speak('SAY WHAT?');
-        }else {
-            let indexOfAnswer = res.indexOf(res[0][1]);
-
-
-            // for (let i = 0; i < fact_buttons.length; i++) {
-            //
-            //     if (res[0][1] === fact_buttons[i].textContent) {
-            console.log('got it!');
-            validate(fact_buttons[indexOfAnswer]);
-            fetchFacts();
-            // return;
-            //     }
-            // }
+        if (res === null) {
+            console.log('no result returned from speech');
+            return;
         }
-    };
-    // start recording audio
-    recognition.start();
+        let indexOfAnswer = fuzzyStrings.indexOf(res[0][1]);
 
+        console.log('got it!', res);
+        console.log('index!', indexOfAnswer);
+        validate(fact_buttons[indexOfAnswer]);
+        fetchFacts();
+
+    };
+
+    recognition.onerror = (event) => {
+        recognition.abort();
+        console.log('SPEECH FAIL');
+    };
     // restart recording audio
     recognition.onend = (event) => {
+        console.log('END');
         recognition.start();
     };
+
+    recognition.start();
 }
 
 
@@ -81,9 +82,9 @@ function speak(speech) {
     let utterThis = new SpeechSynthesisUtterance(speech);
 
     let voices = synth.getVoices();
-    utterThis.voice = voices[0];
-    utterThis.pitch = 10;
-    utterThis.rate = 10;
+    utterThis.voice = voices[4];
+    utterThis.lang = 'en-US';
+
     synth.speak(utterThis);
 }
 
@@ -93,15 +94,13 @@ function speak(speech) {
  * @param btn was pressed by a player
  */
 function validate(btn) {
-
     if (btn.value === 'true') {
         btn.className += " " + "true";
-    } else
+        speak('Correct! What a champ!');
+    } else {
         btn.className += " " + "false";
-
-    setTimeout(() => {
-        show_loader(true);
-    }, 1300);
+        speak('Incorrect! Try harder');
+    }
 }
 
 /**
