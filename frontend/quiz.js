@@ -17,6 +17,9 @@ $(document).ready(function () {
 });
 
 function show_loader(isShowing) {
+    let loader = document.getElementById('loader');
+    let btn_group = document.getElementById('facts');
+
     if (isShowing) {
         loader.className = loader.className.replace(/\binactive\b/g, "active");
         btn_group.className = btn_group.className.replace(/\bactive\b/g, "inactive");
@@ -90,10 +93,15 @@ function speak(speech) {
  * @param btn was pressed by a player
  */
 function validate(btn) {
+
     if (btn.value === 'true') {
         btn.className += " " + "true";
     } else
         btn.className += " " + "false";
+
+    setTimeout(() => {
+        show_loader(true);
+    }, 1300);
 }
 
 /**
@@ -125,15 +133,14 @@ function reset(fact_buttons) {
  */
 async function fetchFacts() {
     let filter_uri = window.location.hash.substring(1);
+    console.log('filtered:', filter_uri);
+
     let fact_buttons = document.getElementsByClassName('fact');
 
-    setTimeout(() => {
-        show_loader(true);
-    }, 2000);
-
-    const response = await fetch(base_url + `?persons=${filter_uri}`);
+    console.log('fetch fact');
+    const response = await fetch(base_url + `?subjects=${filter_uri}`);
     let data = await response.json();
-
+    console.log('finished fetching');
     show_loader(false);
     shuffleArray(data);
     reset(fact_buttons);
