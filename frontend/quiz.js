@@ -1,17 +1,12 @@
-let base_url = "http://localhost:5000/api/fact";
+let base_url = "http://localhost:5000/api";
 
 /**
  * show loader on start and
  * fetch facts from server
  */
 $(document).ready(function () {
-    let loader = document.getElementById('loader');
-    let btn_group = document.getElementById('facts');
-
     fetchFacts().then(() => {
         show_loader(false);
-        // loader.className = loader.className.replace(/\bactive\b/g, "inactive");
-        // btn_group.className = btn_group.className.replace(/\binactive\b/g, "active");
         transcriptSpeech();
     });
 });
@@ -94,8 +89,8 @@ function speak(speech) {
  * @param btn was pressed by a player
  */
 async function validate(btn) {
-    var isCorrect = (btn.value == 'true');
-    const response = await fetch("http://localhost:5000/api/answer" + `?userId=666&selectedTrueFact=${isCorrect}`);
+    const isCorrect = (btn.value === 'true');
+    await fetch(base_url+ "/answer" + `?userId=666&selectedTrueFact=${isCorrect}`);
 
     if (btn.value === 'true') {
         btn.className += " " + "true";
@@ -140,19 +135,46 @@ async function fetchFacts() {
     let fact_buttons = document.getElementsByClassName('fact');
 
     console.log('fetch fact');
-    const response = await fetch(base_url + `?subjects=${filter_uri}&userID=666`);
+    const response = await fetch(base_url+ "/fact" + `?userID=666&subjects=${filter_uri}`);
     let data = await response.json();
     console.log('finished fetching');
     show_loader(false);
     shuffleArray(data);
     reset(fact_buttons);
 
+    create_facts(data);
+    // data.forEach((el, index) => {
+    //     console.log('index:', index);
+    //     const {Fact} = el;
+    //     const {factTrue, sentence} = Fact;
+    //
+    //     fact_buttons[index].textContent = sentence;
+    //     fact_buttons[index].value = factTrue;
+    // });
+}
+
+function create_facts(data){
+    let facts_div = document.getElementById('facts');
+
+    while(facts_div.firstChild){
+        facts_div.removeChild(facts_div.firstChild);
+    }
+// <button class="fact" onclick="validate(this); fetchFacts();">
+//         </button>
     data.forEach((el, index) => {
-        console.log('index:', index);
         const {Fact} = el;
         const {factTrue, sentence} = Fact;
 
-        fact_buttons[index].textContent = sentence;
-        fact_buttons[index].value = factTrue;
+        let fact_btn = document.createElement('button');
+        fact_btn.className = "fact";
+        fact_btn.textContent = sentence;
+        fact_btn.value = factTrue;
+        fact_btn.onclick = ()=>{
+        validate(fact_btn);
+        fetchFacts();
+        };
+
+        facts_div.appendChild(fact_btn);
     });
+
 }
