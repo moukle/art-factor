@@ -64,13 +64,11 @@ async function transcriptSpeech() {
     };
     // restart recording audio
     recognition.onend = (event) => {
-        console.log('speech recording ended...');
         recognition.start();
     };
 
     recognition.start();
 }
-
 
 function speak(speech) {
     let synth = window.speechSynthesis;
@@ -90,7 +88,7 @@ function speak(speech) {
  */
 async function validate(btn) {
     const isCorrect = (btn.value === 'true');
-    await fetch(base_url+ "/answer" + `?userId=666&selectedTrueFact=${isCorrect}`);
+    await fetch(base_url+ "/answer" + `?userId=git 66&selectedTrueFact=${isCorrect}`);
 
     if (btn.value === 'true') {
         btn.className += " " + "true";
@@ -135,7 +133,7 @@ async function fetchFacts() {
     let fact_buttons = document.getElementsByClassName('fact');
 
     console.log('fetch fact');
-    const response = await fetch(base_url+ "/fact" + `?userID=666&subjects=${filter_uri}`);
+    const response = await fetch(base_url+ "/fact" + `?userID=66&subjects=${filter_uri}`);
     let data = await response.json();
     console.log('finished fetching');
     show_loader(false);
@@ -143,24 +141,24 @@ async function fetchFacts() {
     reset(fact_buttons);
 
     create_facts(data);
-    // data.forEach((el, index) => {
-    //     console.log('index:', index);
-    //     const {Fact} = el;
-    //     const {factTrue, sentence} = Fact;
-    //
-    //     fact_buttons[index].textContent = sentence;
-    //     fact_buttons[index].value = factTrue;
-    // });
 }
 
 function create_facts(data){
     let facts_div = document.getElementById('facts');
+    const prev_size = facts_div.children.length;
+    const curr_size = data.length;
 
     while(facts_div.firstChild){
         facts_div.removeChild(facts_div.firstChild);
     }
-// <button class="fact" onclick="validate(this); fetchFacts();">
-//         </button>
+
+    if(prev_size < curr_size){
+        console.log('LOOOW');
+        speak('Ok I am going to help you out. 50/50 Joker here we go!');
+    } else{
+        console.log('ABOOVE');
+        speak('What an expert! Guess I have to increase the difficulty');
+    }
     data.forEach((el, index) => {
         const {Fact} = el;
         const {factTrue, sentence} = Fact;
