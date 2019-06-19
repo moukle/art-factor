@@ -8,13 +8,13 @@ def log_answer(userId, selectedTrueFact):
 
 
 def get_true_ratio_for_user(userID):
-        history = userHistory[userID]
+        history = userHistory[userID][-5:]
         trueCount = Counter(history)[True]
         return divide(trueCount, len(history))
 
 
 def divide(a, b):
         if b == 0:
-                return 0
+                return 0.5
         else:
                 return a/b
