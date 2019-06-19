@@ -41,7 +41,7 @@ async function transcriptSpeech() {
         let fact_buttons = document.getElementsByClassName('fact');
 
         // fuzzy string matching
-        const fuzzyStrings = ['Option A', 'Option B', 'Option C'];
+        const fuzzyStrings = ['Option A', 'Option B', 'Option C', 'Option D'];
         let fuzzySet = FuzzySet(fuzzyStrings);
         let res = fuzzySet.get(speechToText);
 
@@ -74,9 +74,10 @@ function speak(speech) {
     let synth = window.speechSynthesis;
     let utterThis = new SpeechSynthesisUtterance(speech);
 
-    let voices = synth.getVoices();
-    utterThis.voice = voices[4];
     utterThis.lang = 'en-US';
+    let voices = synth.getVoices();
+    utterThis.voice = voices[2];
+    
 
     synth.speak(utterThis);
 }
@@ -88,14 +89,14 @@ function speak(speech) {
  */
 async function validate(btn) {
     const isCorrect = (btn.value === 'true');
-    await fetch(base_url+ "/answer" + `?userId=git 66&selectedTrueFact=${isCorrect}`);
+    await fetch(base_url+ "/answer" + `?userId=6&selectedTrueFact=${isCorrect}`);
 
     if (btn.value === 'true') {
         btn.className += " " + "true";
-        speak('Correct! What a champ!');
+        speak('Correct!');
     } else {
         btn.className += " " + "false";
-        speak('Incorrect! Try harder');
+        speak('Incorrect!');
     }
 }
 
@@ -133,7 +134,7 @@ async function fetchFacts() {
     let fact_buttons = document.getElementsByClassName('fact');
 
     console.log('fetch fact');
-    const response = await fetch(base_url+ "/fact" + `?userID=66&subjects=${filter_uri}`);
+    const response = await fetch(base_url+ "/fact" + `?userID=6&subjects=${filter_uri}`);
     let data = await response.json();
     console.log('finished fetching');
     show_loader(false);
@@ -152,12 +153,11 @@ function create_facts(data){
         facts_div.removeChild(facts_div.firstChild);
     }
 
-    if(prev_size < curr_size){
-        console.log('LOOOW');
-        speak('Ok I am going to help you out. 50/50 Joker here we go!');
-    } else{
+    if(prev_size > curr_size){
+        speak('Ok I am going to help you out.');
+    } else if(prev_size < curr_size){
         console.log('ABOOVE');
-        speak('What an expert! Guess I have to increase the difficulty');
+        speak('Guess I have to increase the difficulty');
     }
     data.forEach((el, index) => {
         const {Fact} = el;
